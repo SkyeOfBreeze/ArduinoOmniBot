@@ -48,7 +48,7 @@ Wheel directions:
  (+)    
     
    C
-(+)-(-)
+(-)-(+)
 ```
 
 Forms of control (a byte is assumed here to be sent as -100 to 100 unless otherwise specified):
