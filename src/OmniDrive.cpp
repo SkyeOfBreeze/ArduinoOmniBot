@@ -39,4 +39,12 @@ struct OmniDrive
         float theta = wheel[wheelPos] - thetaJoy;
         return speed*sin(theta);
     }
+
+    void zero(){
+        xJoy = 0;
+        yJoy = 0;
+        thetaJoy = atan2(xJoy, yJoy);
+        rJoy = sqrt(yJoy*yJoy + xJoy*xJoy);
+        speed = 0;
+    }
 };

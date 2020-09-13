@@ -44,4 +44,9 @@ class TriOmniServoDrive{
         servoB.write(B);
         servoC.write(C);
     }
+
+    void stop(){
+        drive.zero();
+        driveServos();
+    }
 };
