@@ -70,7 +70,7 @@ Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), /r, /n)
 
 ## Keyboard Control ##
 
-- WSAD: Hardcoded -1 to 1 in X and Y axis, with mixing if multiple are pressed (Sent as packet(0x02, char, /r,/n))
+- Numpad: Hardcoded -1 to 1 in X and Y axis (Sent as packet(0x02, char, /r,/n)) (a,d): rotate
 
 - Linear Speed UP/DOWN: u/j
 

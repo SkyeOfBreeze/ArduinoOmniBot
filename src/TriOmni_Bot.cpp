@@ -9,6 +9,8 @@
 
 TriOmniServoDrive drive;
 CommandReceiver commandReceiver;
+float speed = 1;
+float rotationSpeed = 1;
 char input[20];
 int dataSize;
 
@@ -25,6 +27,10 @@ void loop() {
   // drive.updateJoystick(0, 1);
   drive.updateDirectional(1.5708, 1);
   // put your main code here, to run repeatedly:
+}
+
+float degToRad(float degrees){
+  return degrees*(PI/180);
 }
 
 void handleControls(){
@@ -66,36 +72,77 @@ void handleControls(){
 }
 
 void handleKeyControl(char key){
-  //TODO Might have to break it up into a numpad style control for all of the available motion...
+  //numpad style control
+  /*
+  789
+  4 6
+  123
+
+  8 forward
+  2 backward
+  4 left
+  6 right
+  */
   switch (key)
   {
-    case 'w':
-      
+    case '8': //forward
+      drive.updateDirectional(degToRad(90), speed);
       break;
-    case 's':
-      
+    case '2': //backward
+      drive.updateDirectional(degToRad(270), speed);
       break;
-    case 'a':
-      
+    case '4': //strafe left
+      drive.updateDirectional(degToRad(180), speed);
       break;
-    case 'd':
-      
+    case '6': //strafe right
+      drive.updateDirectional(degToRad(0), speed);
       break;
-    case 'u':
-      
+    case '7': //forward-left
+      drive.updateDirectional(degToRad(45), speed);
       break;
-    case 'j':
-      
+    case '9': //forward-right
+      drive.updateDirectional(degToRad(135), speed);
       break;
-    case 'i':
-      
+    case '1': //back-left
+      drive.updateDirectional(degToRad(225), speed);
       break;
-    case 'k':
-      
+    case '3': //back-right
+      drive.updateDirectional(degToRad(315), speed);
       break;
+
+    case 'a': //rotate left
+      drive.rotate(1, rotationSpeed);
+      break;
+    case 'd': //rotate right
+      drive.rotate(-1, rotationSpeed);
+      break;
+
+    case 'u': //linear speed up
+      speed += .1f;
+      if(speed > 1)
+        speed = 1;
+      break;
+    case 'j': //linear speed down
+      speed -= .1f;
+      if(speed < -1)
+        speed = -1;
+      break;
+
+    case 'i': //rotational speed up
+      rotationSpeed += .1f;
+      if(rotationSpeed > 1)
+        rotationSpeed = 1;
+      break;
+    case 'k': //rotational speed down
+      rotationSpeed -= .1f;
+      if(rotationSpeed < -1)
+        rotationSpeed = -1;
+      break;
+
     case 'x':
-      
+      drive.stop();
       break;
+      
     default:
 
       break;
