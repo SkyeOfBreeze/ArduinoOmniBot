@@ -66,11 +66,11 @@ C: D12
 
 ## 1 Joystick. ##
 
-Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), /r, /n)
+Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), \r, /n)
 
 ## Keyboard Control ##
 
-- Numpad: Hardcoded -1 to 1 in X and Y axis (Sent as packet(0x02, char, /r,/n)) (a,d): rotate
+- Numpad: Hardcoded -1 to 1 in X and Y axis (Sent as packet(0x02, char, \r,/n)) (a,d): rotate
 
 - Linear Speed UP/DOWN: u/j
 
@@ -80,10 +80,10 @@ Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), /r, /n)
 
 ## STOP PACKET ##
 
-packet(0x00, /r, /n)
+packet(0x00, \r, /n)
 
 ## RAW: Raw motor control. ##
 
-Value range, -1 to 1, translated from -100 to 100 via packet(0x03, A(byte), B(byte), C(byte), /r, /n)
+Value range, -1 to 1, translated from -100 to 100 via packet(0x03, A(byte), B(byte), C(byte), \r, /n)
 
 # NOTE: any speed calculations for wheels are done in radians #

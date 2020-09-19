@@ -2,13 +2,17 @@
 class CommandReceiver
 {
 private:
-    int MAX_INPUT = 20;
+    unsigned int MAX_INPUT = 20;
     char input_line[20];
     unsigned int input_pos = 0;
+    unsigned int mark = 0; //mark the end of the array
 
 public:
     void setup(){
         Serial.begin(9600);
+        while(!Serial) { 
+            delay(100); 
+        }
     }
 
     /**
@@ -19,8 +23,10 @@ public:
         if (Serial.available() > 0)
         {
             char inByte = Serial.read ();
+            Serial.write(inByte);
             return processByte(inByte);
         }
+        return false;
     }
 
     /**
@@ -35,7 +41,7 @@ public:
             input_line[input_pos] = 0; // terminating null byte
 
             // terminator reached! process input_line here ...
-            Serial.println(input_line);
+            mark = input_pos;
             // reset buffer for next time
             input_pos = 0;
             return true;
@@ -52,8 +58,7 @@ public:
         return false;
     }
 
-    bool isBufferEndReached()
-    {
+    bool isBufferEndReached(){
         return input_pos < (MAX_INPUT - 1);
     }
 
@@ -64,7 +69,7 @@ public:
 
     short getBufferSize()
     {
-        return input_pos + 1;
+        return mark + 1;
     }
 
     void getData(char data[]){

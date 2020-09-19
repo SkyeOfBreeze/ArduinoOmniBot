@@ -1,3 +1,4 @@
+#include <avr/wdt.h>
 #include "TriOmni_Bot.h"
 #include <Arduino.h>
 #include "TriOmniServoDrive.cpp"
@@ -16,56 +17,73 @@ int dataSize;
 
 void setup() {
   drive.setup(servoPinA, servoPinB, servoPinC);
-  delay(3000);
+  drive.rotate(1, 1);
+  commandReceiver.setup();
+  drive.stop();
+  //wdt_enable(WDTO_250MS);
 }
 
 void loop() {
   bool result = commandReceiver.poll();
   if(result){
+    //wdt_reset();
     handleControls();
   }
-  // drive.updateJoystick(0, 1);
-  drive.updateDirectional(1.5708, 1);
-  // put your main code here, to run repeatedly:
+}
+
+ISR(WDT_vect){
+  Serial.println("Watchdog Interrupt - Restarting");
+  // you can include any code here. With the reset disabled you could perform an action here every time
+  // the watchdog times out...
 }
 
 float degToRad(float degrees){
   return degrees*(PI/180);
 }
 
+/**
+ * Handle Contol packet given via commandReceiver. 
+ * Note that even though the packet ended with \n, it is not factored into the length.
+ * EX. packet(0x01, X(byte), Y(byte), \r, \n) has a length of 4, and its last byte is \r, the next byte after will be 0x00
+ * */
 void handleControls(){
   commandReceiver.getData(input);
   dataSize = commandReceiver.getBufferSize();
-  switch (input[0])
+  switch ((byte)input[0])
   {
     case 0x00:
       //STOP PACKET: packet(0x00, /r, /n)
       drive.stop();
       break;
     case 0x01:
-      //1 Joystick. Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), /r, /n)
-      if(dataSize == 5){ //don't do anything if the length is not correct
+      //1 Joystick. Variable -1 to 1 on X and Y axis. Sent as packet(0x01, X(byte), Y(byte), \r, \n)
+      if(dataSize == 4){ //don't do anything if the length is not correct
         drive.updateJoystick(input[1], input[2]);
       }
+      Serial.write(0x01); //Understood
       break;
     case 0x02:
-      //WSAD. Hardcoded -1 to 1 in X and Y axis, with mixing if multiple are pressed (Sent as packet(0x02, char, /r,/n))
+      //WSAD. Hardcoded -1 to 1 in X and Y axis, with mixing if multiple are pressed (Sent as packet(0x02, char, \r,\n))
       //Speed UP/DOWN: u/j
       //Turn Speed UP/DOWN: i/k
       //stop: x
-      if(dataSize == 4){ //don't do anything if the length is not correct
-        handleKeyControl();
+      Serial.println(dataSize);
+      if(dataSize == 3){ //don't do anything if the length is not correct
+        handleKeyControl(input[1]);
       }
+      Serial.write(0x01); //Understood
       break;
     case 0x03:
       //RAW: Raw motor control. Value range, -1 to 1, translated from -100 to 100 via 
-      //packet(0x03, A(byte), B(byte), C(byte), /r, /n)
-      if(dataSize == 5){ //don't do anything if the length is not correct
+      //packet(0x03, A(byte), B(byte), C(byte), \r, \n)
+      if(dataSize == 4){ //don't do anything if the length is not correct
         //TODO
       }
+      Serial.write(0x01); //Understood
       break;
     //TODO case 0x04: bitmap of all the keys in one byte, to actually use WSAD like a tophat that accepts multiple inputs
     default:
+      Serial.write(0x00); //NULL
       drive.stop(); //lets just treat this as a queue to stop...
       break;
   }
@@ -142,7 +160,7 @@ void handleKeyControl(char key){
     case 'x':
       drive.stop();
       break;
-      
+
     default:
 
       break;

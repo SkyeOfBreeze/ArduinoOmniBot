@@ -1,2 +1,2 @@
 void handleControls();
-void handleKeyControl();
+void handleKeyControl(char character);
