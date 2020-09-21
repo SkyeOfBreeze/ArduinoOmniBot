@@ -36,10 +36,11 @@ class TriOmniServoDrive{
         driveServos();
     }
 
-    void rotate(int direction, float speed){
-        servoA.write(direction*speed);
-        servoB.write(direction*speed);
-        servoC.write(direction*speed);
+    void rotate(float direction, float speed){
+        float vel = map(direction*speed, -1.0, 1.0, 0, 180.0);
+        servoA.write(vel);
+        servoB.write(vel);
+        servoC.write(vel);
     }
 
     void driveServos(){

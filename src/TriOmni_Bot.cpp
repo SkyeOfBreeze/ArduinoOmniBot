@@ -131,10 +131,10 @@ void handleKeyControl(char key){
       break;
 
     case 'a': //rotate left
-      drive.rotate(1, rotationSpeed);
+      drive.rotate(-1.0, rotationSpeed);
       break;
     case 'd': //rotate right
-      drive.rotate(1, -rotationSpeed);
+      drive.rotate(1.0, rotationSpeed);
       break;
 
     case 'u': //linear speed up
@@ -144,8 +144,8 @@ void handleKeyControl(char key){
       break;
     case 'j': //linear speed down
       speed -= .1f;
-      if(speed < -1)
-        speed = -1;
+      if(speed < .1)
+        speed = .1;
       break;
 
     case 'i': //rotational speed up
@@ -155,8 +155,8 @@ void handleKeyControl(char key){
       break;
     case 'k': //rotational speed down
       rotationSpeed -= .1f;
-      if(rotationSpeed < -1)
-        rotationSpeed = -1;
+      if(rotationSpeed < .1)
+        rotationSpeed = .1;
       break;
 
     case 'x':
