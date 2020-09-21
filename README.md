@@ -3,6 +3,16 @@
 Made for Platform.IO, but may work on Arduino IDE with little modifications
 3 Omni Wheel Setup,  120 degrees apart. Can be scaled to a different setup as well.
 
+# What works #
+
+- Keyboard control
+
+# What needs work #
+
+- Raw motor control
+
+- Joytick control
+
 # Wheel positions #
 
 ```
