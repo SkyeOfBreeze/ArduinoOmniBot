@@ -103,9 +103,11 @@ void handleKeyControl(char key){
   */
   switch (key)
   {
+    case 'w': //forward
     case '8': //forward
       drive.updateDirectional(degToRad(90), speed);
       break;
+    case 's': //backward
     case '2': //backward
       drive.updateDirectional(degToRad(270), speed);
       break;
@@ -116,10 +118,10 @@ void handleKeyControl(char key){
       drive.updateDirectional(degToRad(0), speed);
       break;
     case '7': //forward-left
-      drive.updateDirectional(degToRad(45), speed);
+      drive.updateDirectional(degToRad(135), speed);
       break;
     case '9': //forward-right
-      drive.updateDirectional(degToRad(135), speed);
+      drive.updateDirectional(degToRad(45), speed);
       break;
     case '1': //back-left
       drive.updateDirectional(degToRad(225), speed);
@@ -132,7 +134,7 @@ void handleKeyControl(char key){
       drive.rotate(1, rotationSpeed);
       break;
     case 'd': //rotate right
-      drive.rotate(-1, rotationSpeed);
+      drive.rotate(1, -rotationSpeed);
       break;
 
     case 'u': //linear speed up
